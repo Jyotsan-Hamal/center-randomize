@@ -103,8 +103,20 @@ if calculate:
             return temp_file.name
     
     if st.session_state.calculate_clicked:
-        # Ensure all files are uploaded
-        if schools_file and centers_file and prefs_file:
+        missing_files = []
+        # Check if each file is uploaded
+        if not schools_file:
+            missing_files.append("School/College file")
+        if not centers_file:
+            missing_files.append("Centers file")
+        if not prefs_file:
+            missing_files.append("Preferences file")
+
+        if missing_files:
+            # Display error message listing missing files
+            st.sidebar.error(f"Please upload the following files: {', '.join(missing_files)}", icon="🚨")
+
+        else:
             schools_path = save_file_to_temp(schools_file)
             centers_path = save_file_to_temp(centers_file)
             prefs_path = save_file_to_temp(prefs_file)
@@ -129,9 +141,6 @@ if calculate:
                 st.session_state.calculated_data['school_center_distance'] = school_center_distance_file
             else:
                 tab1.error("Calculated data not found", icon="🚨")
-
-        else:
-            st.sidebar.error("Please upload all required files.", icon="🚨")
 
 elif not st.session_state.calculate_clicked:
     tab1_msg = tab1.info("Results will be shown only after the calculation is completed.", icon="ℹ️")
