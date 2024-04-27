@@ -13,6 +13,9 @@ st.set_page_config(
 #    page_icon="https://avatars.githubusercontent.com/u/167545222?s=200&v=4", # official logo
    layout="wide",
    initial_sidebar_state="expanded",
+   menu_items={
+        'Report a bug': "https://github.com/moest-np/center-randomize/issues/new/choose"
+    }
 )
 
 # Session setup
@@ -29,12 +32,16 @@ if 'filter_value' not in st.session_state:
 
 
 #Maps setup
-m = folium.Map(location=[27.7007, 85.3001], zoom_start=12, )
+m = folium.Map(
+    location=[27.7007, 85.3001], 
+    zoom_start=12,  
+    tiles="https://tile.openstreetmap.org/{z}/{x}/{y}.png", #Better template for map
+    attr='My Data Attribution')
 fg = folium.FeatureGroup(name="Allocated Centers")
 
 #Sidebar
 with st.sidebar:
-
+    st.image("https://avatars.githubusercontent.com/u/167545222?s=200&v=4", width=200)
     add_side_header = st.sidebar.title("Random Center Calculator")
 
     schools_file = st.sidebar.file_uploader("Upload School/College file", type="tsv")
